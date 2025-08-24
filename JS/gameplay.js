@@ -14,7 +14,7 @@ BACKGROUND_LOOPING_POINT = 413
 
 dt=1/60;
 
-GRAVITY=20;
+GRAVITY=40;
 
 GAP_HEIGHT = 90
 
@@ -74,7 +74,7 @@ GamePlayManager={
         this.hurt=game.sound.add("hurt");
         this.score=game.sound.add("score");
 
-       //this.showFinalMessage('Click to Start');
+       this.showFinalMessage('Click to Start');
        
         game.input.onDown.add(this.onTap,this);
       
@@ -117,10 +117,8 @@ GamePlayManager={
                 //this.y+=pipe.height+GAP_HEIGHT;
                 this.y=(this.random);
                 //this.pipes_pair[this.count].scale.setTo(1);
-           
-            
 
-            this.count+=1;
+             this.count+=1;
         }
         //this.pipes_grounp.add(this.pipes_pair);
         //this.pipes_grounp[this.count]=this.pipes_pair;
@@ -129,43 +127,21 @@ GamePlayManager={
         // this.pipes_pair[1]=game.add.sprite(50,(VIRTUAL_HEIGHT/2)+GAP_HEIGHT);
     },
 
-    // spawnPipes: function(){
-    //     this.pipes_pair=[];
-    //     this.pipes_grounp[this.count]=this.pipes_pair;
-    //     for(let i=0;i<2;i++){
-
-    //         var pipe=game.add.sprite(this.x,this.y,"pipe");
-    //         this.pipes_pair[i]=pipe;
-    //         this.pipes_pair[i].anchor.setTo(0.5,0.5);
-    //         //this.pipes_pair[i].scale.setTo(-1);
-    //        // this.x=VIRTUAL_WIDTH+32;
-    //         if(i%2==0){
-    //             this.y+=pipe.height+GAP_HEIGHT;
-    //             this.pipes_pair[i].scale.setTo(-1);
-    //         }else{
-    //             this.y-=pipe.height+GAP_HEIGHT;
-    //         }
-    //     }
-    //     //this.pipes_grounp.add(this.pipes_pair);
-    //     //this.pipes_grounp[this.count]=this.pipes_pair;
-    //     this.count+=1;
-    //     // this.pipes_pair[0]=game.add.sprite(50,(VIRTUAL_HEIGHT/2)-GAP_HEIGHT);
-    //     // this.pipes_pair[1]=game.add.sprite(50,(VIRTUAL_HEIGHT/2)+GAP_HEIGHT);
-    // },
 
     onTap: function(){
         if(!this.flagFirstMouseDown){
             //this.tweenMollusk = game.add.tween(this.mollusk.position).to( {y: -0.001}, 5800, Phaser.Easing.Cubic.InOut, true, 0, 1000, true).loop(true);
             this.flagFirstMouseDown=true;
             
-        }else{
-            //this.flagFirstMouseDown=false;
-            if(!this.endGame){
-                this.bird.y-=10;
-                this.jump.play()
-            }
-           
         }
+        // else{
+        //     //this.flagFirstMouseDown=false;
+        //     if(!this.endGame){
+        //         this.bird.y-=10;
+        //         this.jump.play()
+        //     }
+           
+        // }
         
     },
 
@@ -243,28 +219,20 @@ GamePlayManager={
     },
 
     birdMove:function(){
-        this.bird.y+=GRAVITY*dt;
+
+            var pointerY=game.input.y;
+            var distY=pointerY-this.bird.y;
+            this.bird.y+=distY*0.02;
+
+       /*  this.bird.y+=GRAVITY*dt;
         
-        if(this.bird.y>game.height+16){
+        if(this.bird.y>game.height+16 || this.bird.y<0){
             this.gameOver();
         }
-       
+        */
     },
     pipesMove:function(){
-        // if(this.pipes_grounp.len!=0){
-        //     for(let i=0;i<this.pipes_grounp.len;i++){
-        //         this.pipes_grounp[i].pipes_pair[0].x-=GRAVITY*dt
-        //         this.pipes_grounp[i].pipes_pair[1].x-=GRAVITY*dt
-        //     }
-        // }
-        // if(this.count>0){
-        //     for(let i=0;i<this.count;i++){
-        //         this.pipes_grounp[i][0].x-=GRAVITY*dt
-        //         this.pipes_grounp[i][1].x-=GRAVITY*dt
-        //     }
-        // }
-        // this.pipes_pair[0].x-=GRAVITY*dt
-        // this.pipes_pair[1].x-=GRAVITY*dt
+       
         if(this.count>0){
                  for(let i=0;i<this.count;i++){
                     
@@ -306,16 +274,12 @@ GamePlayManager={
     update:function(){
         //console.log("update");
         if(this.flagFirstMouseDown && !this.endGame){
-            //this.parallaxEffect();
+            this.parallaxEffect();
             this.pipesMove();
             this.birdMove();
             this.spawnTimer+=dt;
-             //if(this.spawnTimer%2==0){
-                 //spawnTimer=0;
-                 //this.spawnPipes();
-             //}
-            //this.pipesMove();
-            if(this.spawnTimer>7){
+            
+            if(this.spawnTimer>3){
                 //this.spawnPipes();
                 this.spawnTimer=0;
                 this.spawnPipes();
