@@ -74,7 +74,7 @@ GamePlayManager={
         this.hurt=game.sound.add("hurt");
         this.score=game.sound.add("score");
 
-       this.showFinalMessage('Click to Start');
+       //this.showFinalMessage('Click to Start');
        
         game.input.onDown.add(this.onTap,this);
       
