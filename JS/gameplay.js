@@ -47,10 +47,10 @@ GamePlayManager={
         game.load.image("pipe","../SRC/IMAGES/Asteroid1.png");
         //game.load.image("pipe2","../SRC/IMAGES/pipe2.png")
         //Cargar Sonidos
-        game.load.audio("hurt","../SRC/SOUNDS/hurt.wav");
-        game.load.audio("jump","../SRC/SOUNDS/jump.wav");
+        game.load.audio("hurt","../SRC/SOUNDS/explosion.wav");
+        //game.load.audio("jump","../SRC/SOUNDS/jump.wav");
         game.load.audio("score","../SRC/SOUNDS/score.wav");
-        game.load.audio("marios_way","../SRC/SOUNDS/marios_way.mp3");
+        game.load.audio("marios_way","../SRC/SOUNDS/Galaxias y Destellos.mp3");
     },
     create:function(){
         //console.log("create");
@@ -70,7 +70,7 @@ GamePlayManager={
         this.loop=game.sound.add("marios_way");
         this.loop.play(); 
         
-        this.jump=game.sound.add("jump");
+        //this.jump=game.sound.add("jump");
         this.hurt=game.sound.add("hurt");
         this.score=game.sound.add("score");
 
@@ -98,9 +98,9 @@ GamePlayManager={
     spawnPipes: function(){
         //this.pipes_pair=[];
         
-        for(let i=0;i<1;i++){
+        for(let i=0;i<3;i++){
 
-            this.random=game.rnd.integerInRange(100,1000);
+            this.random=game.rnd.integerInRange(50,350);
         //this.y=0;
             
             // var pipe=game.add.sprite(this.x,this.y,"pipe");
@@ -123,8 +123,8 @@ GamePlayManager={
         //this.pipes_grounp.add(this.pipes_pair);
         //this.pipes_grounp[this.count]=this.pipes_pair;
        
-        // this.pipes_pair[0]=game.add.sprite(50,(VIRTUAL_HEIGHT/2)-GAP_HEIGHT);
-        // this.pipes_pair[1]=game.add.sprite(50,(VIRTUAL_HEIGHT/2)+GAP_HEIGHT);
+        //this.pipes_pair[0]=game.add.sprite(50,(VIRTUAL_HEIGHT/2)-GAP_HEIGHT);
+        //this.pipes_pair[1]=game.add.sprite(50,(VIRTUAL_HEIGHT/2)+GAP_HEIGHT);
     },
 
 
@@ -194,9 +194,9 @@ GamePlayManager={
     getBoundsHorse:function(){
         //el ancho debe ser siempre positivo
         var x0 = this.bird.x - Math.abs(this.bird.width)/4;
-        var width = Math.abs(this.bird.width)/2;
+        var width = Math.abs(this.bird.width)/4;
         var y0 = this.bird.y - this.bird.height/2;
-        var height = this.bird.height;
+        var height = Math.abs(this.bird.height)/4;
         return new Phaser.Rectangle(x0, y0,width,height);
     },
 
@@ -221,8 +221,11 @@ GamePlayManager={
     birdMove:function(){
 
             var pointerY=game.input.y;
-            var distY=pointerY-this.bird.y;
-            this.bird.y+=distY*0.02;
+            if (pointerY>50 &&pointerY<350){
+                var distY=pointerY-this.bird.y;
+                this.bird.y+=distY*0.02;
+            }
+            
 
        /*  this.bird.y+=GRAVITY*dt;
         
@@ -267,6 +270,7 @@ GamePlayManager={
 
     gameOver:function(){
         this.endGame=true;
+        this.hurt.play();
         this.showFinalMessage("GameOver");
         //this.flagFirstMouseDown=false;
     },
